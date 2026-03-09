@@ -594,6 +594,7 @@ async function main(): Promise<void> {
 
   // Use the official SDK
   const client = new Perplexity({ apiKey });
+  console.error(`Searching (${preset})...`);
 
   try {
     const response = await client.responses.create(requestBody);
