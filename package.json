@@ -1,18 +1,21 @@
 {
-  "name": "perplexity-search",
+  "name": "perplexity-cli",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "directories": {
-    "test": "tests"
-  },
+  "description": "CLI for the Perplexity Agent API — web search from the terminal",
   "scripts": {
     "test": "npx tsx --test tests/search.test.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["perplexity", "ai", "cli", "search", "web-search"],
+  "author": "Ryan Damico",
+  "license": "MIT",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ryandamico/perplexity-cli"
+  },
+  "engines": {
+    "node": ">=21.2.0"
+  },
   "dependencies": {
     "@perplexity-ai/perplexity_ai": "^0.26.1"
   }

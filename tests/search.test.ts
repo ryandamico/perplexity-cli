@@ -27,7 +27,7 @@ function loadFixture(name: string): ResponseCreateResponse {
   const raw = JSON.parse(readFileSync(join(__dirname, "fixtures", name), "utf-8"));
   // Simulate what the SDK's addOutputText does: concatenate all output_text blocks.
   // Real SDK responses always have output_text set; raw JSON fixtures don't.
-  if (raw.output_text === undefined) {
+  if (typeof raw.output_text !== "string") {
     const texts: string[] = [];
     for (const item of raw.output ?? []) {
       if (item.type === "message") {
@@ -99,6 +99,19 @@ describe("parseArgs", () => {
 
   it("throws on unrecognized flags", () => {
     assert.throws(() => parseArgs(["query", "--receny", "week"]), /Unknown flag: --receny/);
+  });
+
+  it("throws when value-taking flag is missing its value", () => {
+    assert.throws(() => parseArgs(["query", "--preset"]), /--preset requires a value/);
+    assert.throws(() => parseArgs(["query", "--recency"]), /--recency requires a value/);
+    assert.throws(() => parseArgs(["query", "--domains"]), /--domains requires a value/);
+    assert.throws(() => parseArgs(["query", "--body"]), /--body requires a value/);
+    assert.throws(() => parseArgs(["query", "--save"]), /--save requires a value/);
+    assert.throws(() => parseArgs(["query", "--instructions"]), /--instructions requires a value/);
+  });
+
+  it("throws on multiple positional query arguments", () => {
+    assert.throws(() => parseArgs(["query one", "query two"]), /Multiple query arguments/);
   });
 });
 
@@ -221,10 +234,10 @@ describe("parseResponse", () => {
     assert.throws(() => parseResponse(fixture, "pro-search"), /usage\.cost is missing/);
   });
 
-  it("handles empty output_text correctly", () => {
-    const fixture = loadFixture("empty-output.json");
-    const result = parseResponse(fixture, "pro-search");
-    assert.equal(result.answer, "", "Empty output_text should produce empty answer");
+  it("throws when usage object is entirely absent", () => {
+    const fixture = loadFixture("pro-search-response.json");
+    delete (fixture as Record<string, unknown>).usage;
+    assert.throws(() => parseResponse(fixture, "pro-search"), /usage\.cost is missing/);
   });
 });
 
@@ -424,11 +437,11 @@ describe("extractUsageMetrics", () => {
   it("includes cost breakdown when available", () => {
     const fixture = loadFixture("pro-search-response.json");
     const metrics = extractUsageMetrics(fixture, []);
-    if (metrics.costBreakdown) {
-      assert.ok(typeof metrics.costBreakdown.input === "number");
-      assert.ok(typeof metrics.costBreakdown.output === "number");
-      assert.ok(typeof metrics.costBreakdown.tool === "number");
-    }
+    assert.ok(metrics.costBreakdown, "costBreakdown should be present given fixture has cost data");
+    assert.ok(typeof metrics.costBreakdown.input === "number");
+    assert.ok(typeof metrics.costBreakdown.output === "number");
+    assert.ok(typeof metrics.costBreakdown.tool === "number");
+    assert.ok(metrics.costBreakdown.tool > 0, "tool cost should be non-zero in pro-search fixture");
   });
 });
 

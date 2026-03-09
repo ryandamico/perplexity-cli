@@ -190,7 +190,8 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch((err) => {
-  console.error(`ERROR: ${err.message}`);
+main().catch((err: unknown) => {
+  const msg = err instanceof Error ? err.message : String(err);
+  console.error(`ERROR: ${msg}`);
   process.exit(1);
 });

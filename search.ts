@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { createInterface } from "node:readline";
 import Perplexity, {
   AuthenticationError,
@@ -95,19 +95,24 @@ export function parseArgs(argv: string[]): ParsedArgs {
       args.preset = "deep-research";
       i++;
     } else if (arg === "--preset") {
-      args.preset = argv[++i];
+      if (++i >= argv.length) throw new Error("Flag --preset requires a value.");
+      args.preset = argv[i];
       i++;
     } else if (arg === "--recency") {
-      args.recency = argv[++i];
+      if (++i >= argv.length) throw new Error("Flag --recency requires a value.");
+      args.recency = argv[i];
       i++;
     } else if (arg === "--domains") {
-      args.domains = argv[++i].split(",");
+      if (++i >= argv.length) throw new Error("Flag --domains requires a value.");
+      args.domains = argv[i].split(",");
       i++;
     } else if (arg === "--instructions") {
-      args.instructions = argv[++i];
+      if (++i >= argv.length) throw new Error("Flag --instructions requires a value.");
+      args.instructions = argv[i];
       i++;
     } else if (arg === "--body") {
-      args.body = argv[++i];
+      if (++i >= argv.length) throw new Error("Flag --body requires a value.");
+      args.body = argv[i];
       i++;
     } else if (arg === "--json") {
       args.json = true;
@@ -116,12 +121,16 @@ export function parseArgs(argv: string[]): ParsedArgs {
       args.raw = true;
       i++;
     } else if (arg === "--save") {
-      args.save = argv[++i];
+      if (++i >= argv.length) throw new Error("Flag --save requires a value.");
+      args.save = argv[i];
       i++;
     } else if (arg === "--yes" || arg === "-y") {
       args.yes = true;
       i++;
     } else if (!arg.startsWith("--")) {
+      if (args.query !== undefined) {
+        throw new Error("Multiple query arguments provided. Wrap the full query in quotes.");
+      }
       args.query = arg;
       i++;
     } else {
@@ -146,6 +155,7 @@ export function buildRequestBody(args: ParsedArgs): ResponseCreateParamsNonStrea
     } catch {
       throw new Error("Invalid JSON in --body argument.");
     }
+    // Force non-streaming — this CLI does not support streamed responses
     bodyObj.stream = false;
     return bodyObj as ResponseCreateParamsNonStreaming;
   }
@@ -261,7 +271,7 @@ export function extractUsageMetrics(
       costBreakdown: {
         input: cost.input_cost,
         output: cost.output_cost ?? 0,
-        tool: cost.tool_cost ?? 0,
+        tool: cost.tool_calls_cost ?? 0,
       },
     } : {}),
   };
@@ -305,7 +315,7 @@ export function formatMarkdown(result: ParsedResponse, query: string, meta?: Req
     md += "\n```\n\n";
     // Ready-to-paste CLI command
     md += "**Reproduce:**\n```bash\n";
-    md += `npx tsx "${join(SCRIPT_DIR, "search.ts")}" --body '${JSON.stringify(meta.requestBody)}'`;
+    md += `npx tsx search.ts --body '${JSON.stringify(meta.requestBody)}'`;
     md += "\n```\n";
     md += "</details>\n\n";
   }
@@ -405,7 +415,9 @@ Examples:
   npx tsx search.ts --body '{"preset":"pro-search","input":"query"}'
 
 Environment:
-  PERPLEXITY_API_KEY    Required. Set in .env file alongside this script.
+  PERPLEXITY_API_KEY              Required. Set in .env file alongside this script.
+  PERPLEXITY_COST_LIMIT           Cost confirmation threshold in USD (default: 2.00)
+  PERPLEXITY_AUTO_UPDATE_CHECK    Set to "false" to disable auto SDK update checks
 `.trim();
   console.log(help);
 }
@@ -436,7 +448,9 @@ export function loadEnv(): void {
       const eqIdx = trimmed.indexOf("=");
       if (eqIdx === -1) continue;
       const key = trimmed.slice(0, eqIdx).trim();
-      const value = trimmed.slice(eqIdx + 1).trim();
+      let value = trimmed.slice(eqIdx + 1).trim();
+      // Strip surrounding quotes and inline comments
+      value = value.replace(/^["'](.*)["']$/, "$1").replace(/\s+#.*$/, "");
       if (!process.env[key]) {
         process.env[key] = value;
       }
@@ -464,6 +478,8 @@ function warnIfUpdateAvailable(cacheFile: string): void {
 }
 
 function checkForUpdates(): void {
+  if (process.env.PERPLEXITY_AUTO_UPDATE_CHECK === "false") return;
+
   const cacheFile = join(SCRIPT_DIR, "cache", "updates.json");
   const checkScript = join(SCRIPT_DIR, "check-updates.ts");
 
@@ -670,7 +686,7 @@ async function main(): Promise<void> {
 // Only run main when executed directly (not imported for testing)
 const isMain =
   process.argv[1] &&
-  (process.argv[1].endsWith("search.ts") || process.argv[1].endsWith("search.js"));
+  import.meta.url === pathToFileURL(process.argv[1]).href;
 
 if (isMain) {
   main().catch((err) => {
