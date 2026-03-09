@@ -140,7 +140,12 @@ export function buildRequestBody(args: ParsedArgs): ResponseCreateParamsNonStrea
     if (args.body === "-") {
       throw new Error("Stdin body not supported in buildRequestBody — read stdin before calling.");
     }
-    const bodyObj = JSON.parse(args.body);
+    let bodyObj: Record<string, unknown>;
+    try {
+      bodyObj = JSON.parse(args.body);
+    } catch {
+      throw new Error("Invalid JSON in --body argument.");
+    }
     bodyObj.stream = false;
     return bodyObj as ResponseCreateParamsNonStreaming;
   }
@@ -202,7 +207,8 @@ function stripCitations(text: string): string {
   return text.replace(/\[(?:web|page|conversation_history|memory|attached_file|calendar_event|image|generated_image|generated_video):\d+\]/g, "");
 }
 
-function extractSourcesFromOutput(output: OutputItem[]): SearchResult[] {
+function extractSourcesFromOutput(output: OutputItem[] | undefined): SearchResult[] {
+  if (!Array.isArray(output)) return [];
   const sources: SearchResult[] = [];
   for (const item of output) {
     if (item.type === "search_results" && Array.isArray(item.results)) {
@@ -219,7 +225,8 @@ function extractSourcesFromOutput(output: OutputItem[]): SearchResult[] {
   return sources;
 }
 
-export function extractSearchQueries(output: OutputItem[]): string[] {
+export function extractSearchQueries(output: OutputItem[] | undefined): string[] {
+  if (!Array.isArray(output)) return [];
   const queries: string[] = [];
   for (const item of output) {
     if (item.type === "search_results") {
