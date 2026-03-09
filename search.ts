@@ -450,7 +450,10 @@ export function loadEnv(): void {
       const key = trimmed.slice(0, eqIdx).trim();
       let value = trimmed.slice(eqIdx + 1).trim();
       // Strip surrounding quotes and inline comments
-      value = value.replace(/^["'](.*)["']$/, "$1").replace(/\s+#.*$/, "");
+      // Strip inline comments only from unquoted values, then strip quotes
+      const isQuoted = /^["'].*["']$/.test(value);
+      if (!isQuoted) value = value.replace(/\s+#.*$/, "");
+      value = value.replace(/^"(.*)"$/, "$1").replace(/^'(.*)'$/, "$1");
       if (!process.env[key]) {
         process.env[key] = value;
       }

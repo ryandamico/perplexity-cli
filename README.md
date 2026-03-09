@@ -4,9 +4,11 @@ A command-line interface for the [Perplexity Agent API](https://docs.perplexity.
 
 ## Why?
 
-The Perplexity API is powerful but verbose. This CLI wraps it in a single command with sensible defaults, cost guardrails, and clean output.
+The Perplexity API is powerful but verbose. This utility wraps it in a single command with sensible defaults, cost guardrails, and clean output.
 
 ## Quick Start
+
+Requires [Node.js](https://nodejs.org/) >= 21.2.
 
 ```bash
 git clone https://github.com/ryandamico/perplexity-cli.git
@@ -16,12 +18,12 @@ cp .env.example .env        # add your API key
 npx tsx search.ts "your query"
 ```
 
-Get an API key at [perplexity.ai/settings/api](https://www.perplexity.ai/settings/api).
+Get an API key at [perplexity.ai/settings/api](https://www.perplexity.ai/settings/api). [`tsx`](https://tsx.is/) runs TypeScript directly via `npx` — no global install needed.
 
 ## Usage
 
 ```bash
-# Basic search (pro-search preset, ~$0.05)
+# Basic search (pro-search preset)
 npx tsx search.ts "latest TypeScript features"
 
 # Fast and cheap
@@ -50,12 +52,12 @@ cat request.json | npx tsx search.ts --body -
 
 | Preset | Flag | Typical Cost | Speed |
 |---|---|---|---|
-| `fast-search` | `--fast` | ~$0.02 | 5-10s |
-| `pro-search` | *(default)* | ~$0.05 | 10-30s |
+| `fast-search` | `--fast` | ~$0.01-0.05 | 5-10s |
+| `pro-search` | *(default)* | ~$0.01-0.15 | 10-30s |
 | `deep-research` | `--deep` | $0.30-3.00 | 3-5 min |
-| `advanced-deep-research` | `--preset advanced-deep-research` | up to $10 | 5+ min |
+| `advanced-deep-research` | `--preset advanced-deep-research` | $5+ | 5+ min |
 
-Searches estimated above your cost limit (default $2) prompt for confirmation. Bypass with `-y`.
+Costs are non-deterministic — the same query can vary up to 3x between runs. The CLI uses conservative upper-bound estimates internally; searches estimated above your cost limit (default $2) prompt for confirmation. Bypass with `-y`.
 
 ## All Flags
 
@@ -90,6 +92,18 @@ Searches estimated above your cost limit (default $2) prompt for confirmation. B
 | `PERPLEXITY_AUTO_UPDATE_CHECK` | No | Set to `false` to disable automatic SDK update checks |
 
 Set these in a `.env` file in the project directory. See `.env.example`.
+
+## Claude Code Integration
+
+This CLI ships with a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skill in `skill/SKILL.md`. To install it:
+
+```bash
+# From the perplexity-cli directory:
+mkdir -p ~/.claude/skills/perplexity-search
+sed "s|\$PERPLEXITY_CLI_DIR|$(pwd)|g" skill/SKILL.md > ~/.claude/skills/perplexity-search/SKILL.md
+```
+
+Run `npm install` first if you haven't already. This makes the `perplexity-search` skill available in all Claude Code sessions. The skill documents all flags, presets, API parameters, and operational notes so the agent can construct the right search for each situation.
 
 ## Tests
 
