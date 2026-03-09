@@ -1,6 +1,6 @@
 {
   "name": "perplexity-cli",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "CLI for the Perplexity Agent API — web search from the terminal",
   "scripts": {
     "test": "npx tsx --test tests/search.test.ts"
