@@ -298,7 +298,7 @@ export function formatMarkdown(result: ParsedResponse, query: string, meta?: Req
     md += "\n```\n\n";
     // Ready-to-paste CLI command
     md += "**Reproduce:**\n```bash\n";
-    md += `npx tsx ~/.claude/skills/perplexity-search/search.ts --body '${JSON.stringify(meta.requestBody)}'`;
+    md += `npx tsx "${join(SCRIPT_DIR, "search.ts")}" --body '${JSON.stringify(meta.requestBody)}'`;
     md += "\n```\n";
     md += "</details>\n\n";
   }
@@ -450,7 +450,7 @@ function warnIfUpdateAvailable(cacheFile: string): void {
     if (cache.sdk_version_installed !== cache.sdk_version_latest) {
       console.error(
         `NOTE: SDK update available: ${cache.sdk_version_installed} → ${cache.sdk_version_latest}. ` +
-        `Run: cd ~/.claude/skills/perplexity-search && npm update @perplexity-ai/perplexity_ai`
+        `Run: cd ${SCRIPT_DIR} && npm update @perplexity-ai/perplexity_ai`
       );
     }
   } catch { /* cache unreadable — not critical */ }
@@ -483,7 +483,8 @@ function checkForUpdates(): void {
     });
     warnIfUpdateAvailable(cacheFile);
   } catch {
-    console.error("NOTE: Auto-update check failed. Run manually: npx tsx ~/.claude/skills/perplexity-search/check-updates.ts");
+    console.error(`NOTE: Auto-update check failed. Run manually: npx tsx "${join(SCRIPT_DIR, "check-updates.ts")}"`);
+
   }
 }
 
@@ -564,7 +565,7 @@ async function main(): Promise<void> {
   const apiKey = process.env.PERPLEXITY_API_KEY;
   if (!apiKey) {
     console.error(
-      "ERROR: PERPLEXITY_API_KEY not found. Create ~/.claude/skills/perplexity-search/.env with your key."
+      `ERROR: PERPLEXITY_API_KEY not found. Create ${join(SCRIPT_DIR, ".env")} with your key.`
     );
     process.exit(1);
   }
