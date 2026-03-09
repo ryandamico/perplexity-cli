@@ -1,0 +1,15 @@
+{
+    "id": "resp_empty",
+    "object": "response",
+    "status": "completed",
+    "output": [],
+    "usage": {
+        "cost": {
+            "currency": "USD",
+            "total_cost": 0.001
+        },
+        "input_tokens": 100,
+        "output_tokens": 0,
+        "total_tokens": 100
+    }
+}

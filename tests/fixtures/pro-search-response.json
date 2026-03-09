@@ -1,0 +1,225 @@
+{
+    "background": false,
+    "completed_at": 1773075160,
+    "created_at": 1773075160,
+    "error": null,
+    "frequency_penalty": 0,
+    "id": "resp_86d7a82a-fe53-4e3f-b42e-05475f3a82c0",
+    "incomplete_details": null,
+    "instructions": "## Abstract\n<role>\nYou are an AI assistant developed by Perplexity AI. Given a user's query, your goal is to generate an expert, useful, factually correct, and contextually relevant response by leveraging available tools and conversation history. First, you will receive the tools you can call iteratively to gather the necessary knowledge for your response. You need to use these tools rather than using internal knowledge. Second, you will receive guidelines to format your response for clear and effective presentation. Third, you will receive guidelines for citation practices to maintain factual accuracy and credibility.\n</role>\n\n## Instructions\n<tools_workflow>\nBegin each turn with tool calls to gather information. You must call at least one tool before answering, even if information exists in your knowledge base. Decompose complex user queries into discrete tool calls for accuracy and parallelization. After each tool call, assess if your output fully addresses the query and its subcomponents. Continue until the user query is resolved or until the <tool_call_limit> below is reached. End your turn with a comprehensive response. Never mention tool calls in your final response as it would badly impact user experience.\n\n<tool_call_limit> Make at most three tool calls before concluding.</tool_call_limit>\n</tools_workflow>\n\n{% if tool_instructions|default(false) %}\n{{ tool_instructions }}\n{% endif %}{# endif for tool_instructions|default(false) #}\n\n## Citation Instructions\n<citation_instructions>\nYour response must include at least 1 citation. Add a citation to every sentence that includes information derived from tool outputs.\nTool results are provided using `id` in the format `type:index`. `type` is the data source or context. `index` is the unique identifier per citation.\n<common_source_types> are included below.\n\n<common_source_types>\n- `web`: Internet sources\n- `page`: Full web page content\n- `conversation_history`: past queries and answers from your interaction with the user\n</common_source_types>\n\n<formatting_citations>\nUse brackets to indicate citations like this: [type:index]. Commas, dashes, or alternate formats are not valid citation formats. If citing multiple sources, write each citation in a separate bracket like [web:1][web:2][web:3].\n\nCorrect: \"The Eiffel Tower is in Paris [web:3].\"\nIncorrect: \"The Eiffel Tower is in Paris [web-3].\"\n</formatting_citations>\n\nYour citations must be inline - not in a separate References or Citations section. Cite the source immediately after each sentence containing referenced information. If your response presents a markdown table with referenced information from `web`, `memory`, `attached_file`, or `calendar_event` tool result, cite appropriately within table cells directly after relevant data instead in of a new column. Do not cite `generated_image` or `generated_video` inside table cells.\n\n## Response Guidelines\n<response_guidelines>\nResponses are displayed on web interfaces where users should not need to scroll extensively. Limit responses to 5 sections maximum. Users can ask follow-up questions if they need additional detail. Prioritize the most relevant information for the initial query.\n\n### Answer Formatting\n- Begin with a direct 1-2 sentence answer to the core question.\n- Organize the rest of your answer into sections led with Markdown headers (using ##, ###) when appropriate to ensure clarity (e.g. entity definitions, biographies, and wikis).\n- Your answer should be at least 3 sentences long.\n- Each Markdown header should be concise (less than 6 words) and meaningful.\n- Markdown headers should be plain text, not numbered.\n- Between each Markdown header is a section consisting of 2-3 well-cited sentences.\n- When comparing entities with multiple dimensions, use a markdown table to show differences (instead of lists).\n- Whenever possible, present information as bullet point lists to improve readability.\n- You are allowed to bold at most one word (**example**) per paragraph. You can't bold consecutive words.\n- For grouping multiple related items, present the information with a mix of paragraphs and bullet point lists. Do not nest lists within other lists.\n\n### Tone\n<tone>\nExplain clearly using plain language. Use active voice and vary sentence structure to sound natural. Ensure smooth transitions between sentences. Avoid personal pronouns like \"I\". Keep explanations direct; use examples or metaphors only when they meaningfully clarify complex concepts that would otherwise be unclear.\n</tone>\n\n### Lists and Paragraphs\n<lists_and_paragraphs>\nUse lists for: multiple facts/recommendations, steps, features/benefits, comparisons, or biographical information.\n\nAvoid repeating content in both intro paragraphs and list items. Keep intros minimal. Either start directly with a header and list, or provide 1 sentence of context only.\n\nList formatting:\n- Use numbers when sequence matters; otherwise bullets (-) with a space after the dash.\n- Use numbers when sequence matters; otherwise bullets (-).\n- No whitespace before bullets (i.e. no indenting), one item per line.\n- Sentence capitalization; periods only for complete sentences.\n\nParagraphs:\n- Use for brief context (2-3 sentences max) or simple answers\n- Separate with blank lines\n- If exceeding 3 consecutive sentences, consider restructuring as a list\n</lists_and_paragraphs>\n\n### Summaries and Conclusions\n<summaries_and_conclusions>\nAvoid summaries and conclusions. They are not needed and are repetitive. Markdown tables are not for summaries. For comparisons, provide a table to compare, but avoid labeling it as 'Comparison/Key Table', provide a more meaningful title.\n</summaries_and_conclusions>\n\n## Images\n<images>\nIf you receive images from tools, follow the instructions below.\n\nCiting Images:\n- Use ONLY [image:x] format where x is the numeric id - NEVER use ![alt](url) or URLs.\n- Place [image:x] at the end of sentences or list items.\n- Must be accompanied by text in the same sentence/bullet - never standalone.\n- Only cite when metadata matches the content.\n- Cite each image at most once.\n\nExamples - CORRECT:\n- The Golden Pheasant is known for its vibrant plumage [web:5][image:1].\n- The striking Wellington Dam mural. [image:2]\n\nExamples - INCORRECT:\n- ![Golden Pheasant](https://example.com/pheasant.jpg)\n</images>\n\n## Prohibited Meta-Commentary\n<prohibited_commentary>\n- Never reference your information gathering process in your final answer.\n- Do not use phrases such as:\n- \"Based on my search results...\"\n- \"Now I have gathered comprehensive information...\"\n- \"According to my research...\"\n- \"My search revealed...\"\n- \"I found information about...\"\n- \"Let me provide a detailed answer...\"\n- \"Let me compile this information...\"\n- \"Short Answer: ...\"\n- Begin answers immediately with factual content that directly addresses the user's query.\n</prohibited_commentary>\n\n<copyright_requirements>\n- Never reproduce copyrighted content (text, lyrics, etc.)\n- You may share public domain content (expired copyrights, traditional works)\n- When copyright status is uncertain, treat as copyrighted\n- Keep summaries brief (under 30 words) and original \u2014 don't reconstruct sources\n- Brief factual statements (names, dates, facts) are always acceptable\n</copyright_requirements>\n",
+    "max_output_tokens": 8192,
+    "max_tool_calls": null,
+    "metadata": {},
+    "model": "openai/gpt-5.1",
+    "object": "response",
+    "output": [
+        {
+            "queries": [
+                "popular TypeScript testing frameworks 2025",
+                "JavaScript testing frameworks TypeScript support Jest Vitest Playwright",
+                "2026 state of JS testing TypeScript"
+            ],
+            "results": [
+                {
+                    "date": "2023-05-02",
+                    "id": 1,
+                    "last_updated": "2026-03-08T20:04:08",
+                    "snippet": "## Best Typescript Unit Testing Frameworks\n#### 1.\n...\nA main reason why Jest is a favorite is that it\u2019s perfect for testing React web apps.\nIt also does wonders with Node.js and Vue.js!\nJest is also quite easy to integrate with JavaScript tools like Babel, Webpack and ESLint.\nLikewise, Jest requires zero configuration and can execute multiple tests in parallel.\n\u2026\n#### 2.\nVitest\nLaunched in 2022, Vitest is often seen as an improved version of Jest.\nIt comes with all of Jest\u2019s key built-in features while also including out-of-the-box TS support.\nAs Vitest has Jest-compatible Snapshot along with Expect and coverage, it\u2019s often better suited for modern projects.\n\u2026\n## Best Typescript Unit Testing Frameworks\n#### 1.\n...\nA main reason why Jest is a favorite is that it\u2019s perfect for testing React web apps.\nIt also does wonders with Node.js and Vue.js!\nJest is also quite easy to integrate with JavaScript tools like Babel, Webpack and ESLint.\nLikewise, Jest requires zero configuration and can execute multiple tests in parallel.",
+                    "source": "web",
+                    "title": "TypeScript Unit Testing Frameworks - Capicua",
+                    "url": "https://www.capicua.com/blog/typescript-unit-testing-frameworks"
+                },
+                {
+                    "id": 2,
+                    "last_updated": "2026-03-08T13:54:34",
+                    "snippet": "",
+                    "source": "web",
+                    "title": "Comparisons with Other Test Runners | Guide - Vitest",
+                    "url": "https://vitest.dev/guide/comparisons.html"
+                },
+                {
+                    "date": "2026-01-15",
+                    "id": 3,
+                    "last_updated": "2026-03-04T01:00:43",
+                    "snippet": "Type-checking reached near-complete parity with only 74 test case gaps out of 20,000.\n\u2026",
+                    "source": "web",
+                    "title": "State of TypeScript 2026 | The Dev Newsletter",
+                    "url": "https://devnewsletter.com/p/state-of-typescript-2026/"
+                },
+                {
+                    "date": "2025-04-27",
+                    "id": 4,
+                    "last_updated": "2026-03-05T09:54:31",
+                    "snippet": "**22 Unit Testing Frameworks (Pros & Cons)**\n**JavaScript & TypeScript Frameworks**\n1. Jest\n2. Vitest\n3. Mocha + Chai\n4. AVA\n5. QUnit\n6. Karma\n7. Jasmine\n8. TestCafe\n9. Pytest\n10. unittest\n11. nose2\n12. Testify\n13. doctest\n14. Robot Framework",
+                    "source": "web",
+                    "title": "22 Unit Testing Frameworks and Their Pros and Cons | early Blog",
+                    "url": "https://www.startearly.ai/post/unit-testing-frameworks"
+                },
+                {
+                    "date": "2025-12-23",
+                    "id": 5,
+                    "last_updated": "2026-03-08T00:13:41",
+                    "snippet": "Vitest runs tests in simulated environments like Node, jsdom, or happy-dom, giving developers the flexibility to test components, utilities, and logic in isolation.\nWith built-in mocking, snapshot testing, TypeScript support, and tight integration with modern frontend tooling, Vitest has become a go-to choice for fast, reliable, code-level testing in modern web projects.\n**Key Capabilities of Vitest**\n- Blazing-fast test execution with Vite-powered performance\n- Supports unit, integration, and component testing\n- Runs in simulated environments (Node, jsdom, happy-dom)\n- Built-in mocking, coverage reports, and snapshot testing\n- Native TypeScript support and excellent DX (developer experience)\n- Ideal for Vite-based and modern frontend frameworks like Vue, React, and Svelte",
+                    "source": "web",
+                    "title": "Vitest vs Playwright - BrowserStack",
+                    "url": "https://www.browserstack.com/guide/vitest-vs-playwright"
+                },
+                {
+                    "date": "2026-01-16",
+                    "id": 6,
+                    "last_updated": "2026-02-05T11:22:48.794830",
+                    "snippet": "**January 29** \u2014 TypeScript 5.8 Beta released, introducing the\n`--erasableSyntaxOnly` flag to align with Node.js's experimental type-stripping mode.\nThis beta introduced checked return types for conditional/indexed access types.\nEarlier in January, Node.js 23.6 unflagged the\n`--experimental-strip-types` option, enabling direct execution of TypeScript files without external loaders like ts-node or tsx.\nThis feature, powered by the SWC-based Amaro library, removed the need for a build step in Node.js core for the first time.\n\u2026\n### July\n...\n**July 31** \u2014 Node.js 22.18.0 released with native TypeScript execution support\u2014developers can execute TypeScript with\n`node file.ts` without a separate compile step, though type checking still requires running\n`tsc`.\n\u2026\n**December 2** \u2014 The TypeScript team published \"Progress on TypeScript 7 \u2013 December 2025\", confirming TypeScript 6.0 will be the last release on the old codebase and that TypeScript 7.0 targeting mid-2026 will use the Go-based compiler with planned breaking changes (strict-by-default, ES5 target dropped, AMD/UMD/SystemJS removed, classic Node module resolution eliminated).\nType-checking reached near-complete parity with only 74 test case gaps out of 20,000.",
+                    "source": "web",
+                    "title": "State of TypeScript 2026 - The Dev Newsletter",
+                    "url": "https://devnewsletter.com/p/state-of-typescript-2026"
+                },
+                {
+                    "date": "2025-10-30",
+                    "id": 7,
+                    "last_updated": "2026-01-16T18:40:27.569971",
+                    "snippet": "**Pros**:\n- Maximum flexibility and customization\n- Mature ecosystem with years of battle-testing\n- Works seamlessly with TypeScript\n**Cons**:\n- Requires manual setup of assertions and other utilities\n- Steeper learning curve than opinionated frameworks\n- No built-in mocking or code coverage",
+                    "source": "web",
+                    "title": "Top 10 Test Automation Frameworks for JavaScript ...",
+                    "url": "https://dev.to/henry_messiahtmt_099ca84/top-10-test-automation-frameworks-for-javascript-developers-2025-edition-41fe"
+                },
+                {
+                    "date": "2026-01-01",
+                    "id": 8,
+                    "last_updated": "2026-02-15T09:17:32",
+                    "snippet": "",
+                    "source": "web",
+                    "title": "Comparisons with Other Test Runners | Guide - Vitestvitest.dev \u203a guide \u203a comparisons",
+                    "url": "https://vitest.dev/guide/comparisons"
+                },
+                {
+                    "date": "2026-03-03",
+                    "id": 9,
+                    "last_updated": "2026-03-06T09:31:24",
+                    "snippet": "News for the week of **Feb 23, 2026**: highlights from the State of JS survey, Node is revamping its release schedule, and Bun finally gets stage 3 decorator support.\nFrom the community: Deno's code-first sandboxes, typesafe `Map.has()`, and Electrobun rendering with WebGPU.",
+                    "source": "web",
+                    "title": "The Friendly Show for TypeScript Developers | State of JS, Node ...",
+                    "url": "https://typescript.fm/57"
+                },
+                {
+                    "date": "2026-01-27",
+                    "id": 10,
+                    "last_updated": "2026-02-19T13:11:17",
+                    "snippet": "## The Choice\nTypeScript developers face a real decision:\n- **Jest** - the industry standard for over a decade\n- **Vitest** - the new hotness claiming 10x speed\n- **Playwright** - for E2E and browser testing\n- **Cypress** - for visual debugging and DX\n- **Node Test Runner** - for minimalists who hate dependencies\n\u2026\n## Quick Recommendation\n**Use Vitest for new projects** - fast, modern, Jest-compatible\n**Use Jest if:**\n- You have existing Jest codebases\n- You need corporate support/adoption\n- Running in pure Node.js environments\n## Detailed Analysis\n...\n- 10-100x faster than Jest (Vite-powered)\n- ESM-first, modern JavaScript\n- Jest API - easy migration from Jest\n- Excellent TypeScript support out-of-the-box\n- Built-in code coverage (via c8)\n- 1st-class Vite integration (instant HMR)\n- Smaller bundle, less memory\n...\n### Playwright (v1.40+)\n...\n- True browser automation - tests real user scenarios\n- Multi-browser support (Chromium, Firefox, WebKit)\n- Excellent visual debugging and trace tools\n- Screenshot/video recording built-in\n- Mobile device emulation\n- Network interception capabilities\n**Cons:**\n- Not a unit test framework - overkill for component tests\n...\n|Factor|Jest|Vitest|Playwright|Cypress|Node Test|\n|--|--|--|--|--|--|\n|Speed|\u2b50\u2b50\u2b50|\u2b50\u2b50\u2b50\u2b50\u2b50|\u2b50\u2b50|\u2b50\u2b50|\u2b50\u2b50\u2b50\u2b50\u2b50|\n|TypeScript|\u2b50\u2b50\u2b50\u2b50|\u2b50\u2b50\u2b50\u2b50\u2b50|\u2b50\u2b50\u2b50\u2b50\u2b50|\u2b50\u2b50\u2b50|\u2b50\u2b50\u2b50|\n|Setup Time|\u2b50\u2b50\u2b50\u2b50|\u2b50\u2b50\u2b50\u2b50\u2b50|\u2b50\u2b50\u2b50|\u2b50\u2b50\u2b50|\u2b50\u2b50\u2b50\u2b50|\n|Unit Testing|\u2b50\u2b50\u2b50\u2b50\u2b50|\u2b50\u2b50\u2b50\u2b50\u2b50|\u2b50|\u2b50|\u2b50\u2b50\u2b50\u2b50|\n|E2E Testing|\u2b50\u2b50\u2b50|\u2b50\u2b50\u2b50|\u2b50\u2b50\u2b50\u2b50\u2b50|\u2b50\u2b50\u2b50\u2b50\u2b50|\u2b50|\n|Browser Testing|\u2b50\u2b50\u2b50|\u2b50\u2b50\u2b50|\u2b50\u2b50\u2b50\u2b50\u2b50|\u2b50\u2b50\u2b50\u2b50\u2b50|\u2b50|\n\u2026\n## My Recommendation\n**For new TypeScript projects in 2026:**\n1. **Unit/Component Tests:** Use **Vitest**\n- Speed + Jest compatibility + modern tooling\n2. **E2E Tests:** Use **Playwright**\n- Multi-browser support + debugging tools\n3. **Existing Jest Projects:** Stick with **Jest**\n- No need to migrate for stability",
+                    "source": "web",
+                    "title": "Choosing a TypeScript Testing Framework: Jest vs Vitest ...",
+                    "url": "https://dev.to/agent-tools-dev/choosing-a-typescript-testing-framework-jest-vs-vitest-vs-playwright-vs-cypress-2026-7j9"
+                },
+                {
+                    "date": "2026-01-02",
+                    "id": 11,
+                    "last_updated": "2026-03-08T03:35:09",
+                    "snippet": "",
+                    "source": "web",
+                    "title": "Vitest vs Jest 30: Why 2026 is the Year of Browser-Native Testing",
+                    "url": "https://dev.to/dataformathub/vitest-vs-jest-30-why-2026-is-the-year-of-browser-native-testing-2fgb"
+                },
+                {
+                    "date": "2026-01-08",
+                    "id": 12,
+                    "last_updated": "2026-03-05T15:19:45",
+                    "snippet": "TypeScript completely dominates professional development in 2026. Understand why plain JavaScript is being considered a legacy approach.",
+                    "source": "web",
+                    "title": "TypeScript Becomes the Standard in 2026: Writing Plain JavaScript ...",
+                    "url": "https://jeffbruchado.com.br/en/blog/typescript-dominance-2026-javascript-legacy"
+                },
+                {
+                    "id": 13,
+                    "last_updated": "2026-03-09T11:15:07",
+                    "snippet": "",
+                    "source": "web",
+                    "title": "Top 5 JavaScript Test Automation Frameworks in 2025 - Sauce Labs",
+                    "url": "https://saucelabs.com/resources/blog/top-5-javascript-test-automation-frameworks"
+                },
+                {
+                    "date": "2024-01-06",
+                    "id": 14,
+                    "last_updated": "2026-03-09T13:01:39",
+                    "snippet": "",
+                    "source": "web",
+                    "title": "Vitest",
+                    "url": "https://raygun.com/blog/javascript-unit-testing-frameworks/"
+                },
+                {
+                    "date": "2026-01-10",
+                    "id": 15,
+                    "last_updated": "2026-01-27T01:40:30.361420",
+                    "snippet": "",
+                    "source": "web",
+                    "title": "Toolchain Evolution 2026: Modular TypeScript Workspaces, Edge Builds, and Developer Experience",
+                    "url": "https://typescript.page/toolchain-evolution-2026-modular-typescript-workspaces/"
+                }
+            ],
+            "type": "search_results"
+        },
+        {
+            "content": [
+                {
+                    "annotations": [],
+                    "logprobs": [],
+                    "text": "In 2026, the most popular testing tools in the TypeScript ecosystem cluster around a small set of unit/component and end\u2011to\u2011end (E2E) frameworks, with Vitest, Jest, Playwright, and Cypress appearing as the primary choices, and Node\u2019s built\u2011in test runner gaining traction for minimal setups.[web:10][web:4] Popularity here means frequent recommendations in recent 2026 tooling guides, surveys, and blog posts for TypeScript projects.[web:10][web:9]  \n\n## Core unit/component test runners\n\nFor unit and component tests in TypeScript codebases, a few tools stand out as the main defaults.[web:1][web:10]  \n\n- **Vitest**: Frequently recommended as the default for new TypeScript projects in 2026 due to its Vite-powered speed, native TypeScript support, Jest-compatible API, and strong integration with modern frontend stacks like React, Vue, and Svelte.[web:5][web:10]  \n- **Jest**: Still widely used and described as an \u201cindustry standard\u201d with a large existing install base, especially in React and Node backends, making it a popular choice for teams with legacy or long\u2011lived codebases.[web:1][web:10]  \n- **Mocha + Chai**: Remains a common, more \u201cmanual\u201d setup with strong TypeScript support and flexibility, often appearing in lists of top JavaScript/TypeScript unit testing frameworks.[web:4][web:7]  \n\n## Browser/E2E testing with TypeScript\n\nFor browser automation and full end\u2011to\u2011end flows in TypeScript, dedicated browser frameworks dominate.[web:10][web:13]  \n\n- **Playwright**: Positioned as a top E2E choice for TypeScript because of its first\u2011class TypeScript support, multi\u2011browser automation (Chromium, Firefox, WebKit), and strong debugging features such as traces, screenshots, and videos.[web:5][web:10]  \n- **Cypress**: Still very popular for front\u2011end E2E and integration tests with strong developer experience and visual debugging, and is frequently listed alongside Playwright as a go\u2011to JavaScript/TypeScript test automation framework.[web:10][web:13]  \n\n## Node built\u2011in and minimalist options\n\nTypeScript\u2019s dominance and Node\u2019s evolving support have also elevated lighter\u2011weight options that avoid heavy external tooling.[web:6][web:12]  \n\n- **Node.js Test Runner**: The built-in `node:test` module is cited in 2026 comparisons as a serious option for TypeScript developers who want minimal dependencies, especially when combined with Node\u2019s improving native TypeScript execution story.[web:10][web:6]  \n- **AVA and others**: Frameworks like AVA appear in \u201ctop frameworks\u201d lists, but they are less commonly recommended as the first choice compared with Vitest and Jest for TypeScript-heavy projects.[web:4]  \n\n## What most teams choose in 2026\n\nRecent 2026 guidance for TypeScript projects tends to converge on a simple split across concerns.[web:10][web:15]  \n\n- For new TypeScript apps: **Vitest for unit/component tests** and **Playwright for E2E**, balancing speed, TS support, and modern tooling.[web:10][web:5]  \n- For existing large codebases: **Jest** remains the dominant framework because of its mature ecosystem, snapshots, and widespread adoption.[web:1][web:10]  \n- For minimal or backend\u2011focused services: **Node\u2019s built\u2011in test runner** plus TS tooling is increasingly popular to keep dependencies small while still integrating with the broader TypeScript\u2011first toolchain.[web:10][web:6]",
+                    "type": "output_text"
+                }
+            ],
+            "id": "msg_90ccb2d5-c146-4b78-a708-9a1acc380ebb",
+            "role": "assistant",
+            "status": "completed",
+            "type": "message"
+        }
+    ],
+    "parallel_tool_calls": true,
+    "presence_penalty": 0,
+    "previous_response_id": null,
+    "prompt_cache_key": null,
+    "reasoning": null,
+    "safety_identifier": null,
+    "service_tier": "default",
+    "status": "completed",
+    "store": true,
+    "temperature": 1,
+    "text": {
+        "format": {
+            "type": "text"
+        }
+    },
+    "tool_choice": "auto",
+    "tools": [
+        {
+            "type": "web_search"
+        },
+        {
+            "type": "fetch_url"
+        }
+    ],
+    "top_logprobs": 0,
+    "top_p": 1,
+    "truncation": "disabled",
+    "usage": {
+        "cost": {
+            "currency": "USD",
+            "input_cost": 0.0058,
+            "output_cost": 0.00795,
+            "tool_calls_cost": 0.005,
+            "total_cost": 0.01875
+        },
+        "input_tokens": 4638,
+        "input_tokens_details": {
+            "cached_tokens": 0
+        },
+        "output_tokens": 795,
+        "output_tokens_details": {
+            "reasoning_tokens": 0
+        },
+        "tool_calls_details": {
+            "search_web": {
+                "invocation": 1
+            }
+        },
+        "total_tokens": 5433
+    },
+    "user": null
+}

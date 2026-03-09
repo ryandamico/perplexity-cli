@@ -1,0 +1,84 @@
+{
+    "id": "resp_deep_research",
+    "object": "response",
+    "status": "completed",
+    "output": [
+        {
+            "type": "search_results",
+            "queries": [
+                "deep research topic overview",
+                "foundational aspects of topic"
+            ],
+            "results": [
+                {
+                    "id": 1,
+                    "url": "https://example.com/article-1",
+                    "title": "Deep Research Article 1",
+                    "snippet": "First research finding about the topic.",
+                    "date": "2026-02-15",
+                    "source": "web"
+                },
+                {
+                    "id": 2,
+                    "url": "https://example.com/article-2",
+                    "title": "Deep Research Article 2",
+                    "snippet": "Second research finding with more detail.",
+                    "date": "2026-02-20",
+                    "source": "web"
+                }
+            ]
+        },
+        {
+            "type": "message",
+            "id": "msg_block_1",
+            "role": "assistant",
+            "status": "completed",
+            "content": [
+                {
+                    "type": "output_text",
+                    "text": "## Initial Analysis\n\nThe first part of the deep research covers foundational aspects."
+                }
+            ]
+        },
+        {
+            "type": "search_results",
+            "queries": [
+                "specific areas of topic interest"
+            ],
+            "results": [
+                {
+                    "id": 3,
+                    "url": "https://example.com/article-3",
+                    "title": "Deep Research Article 3",
+                    "snippet": "Third finding from second search round.",
+                    "date": "2026-03-01",
+                    "source": "web"
+                }
+            ]
+        },
+        {
+            "type": "message",
+            "id": "msg_block_2",
+            "role": "assistant",
+            "status": "completed",
+            "content": [
+                {
+                    "type": "output_text",
+                    "text": "\n\n## Detailed Findings\n\nThe second part dives deeper into specific areas of interest."
+                }
+            ]
+        }
+    ],
+    "usage": {
+        "cost": {
+            "currency": "USD",
+            "input_cost": 0.05,
+            "output_cost": 0.10,
+            "tool_calls_cost": 0.15,
+            "total_cost": 0.30
+        },
+        "input_tokens": 10000,
+        "output_tokens": 2000,
+        "total_tokens": 12000
+    }
+}
