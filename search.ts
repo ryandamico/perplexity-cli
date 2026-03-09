@@ -205,7 +205,7 @@ function stripCitations(text: string): string {
 function extractSourcesFromOutput(output: OutputItem[]): SearchResult[] {
   const sources: SearchResult[] = [];
   for (const item of output) {
-    if (item.type === "search_results") {
+    if (item.type === "search_results" && Array.isArray(item.results)) {
       for (const r of item.results) {
         sources.push({
           url: r.url || "",
