@@ -110,7 +110,7 @@ Set these in a `.env` file in the project directory. See `.env.example`.
 This CLI ships with a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skill in `skills/SKILL.md`. To install it:
 
 ```bash
-# From the perplexity-cli directory:
+cd /path/to/perplexity-cli
 mkdir -p ~/.claude/skills/perplexity-search
 sed "s|\$PERPLEXITY_CLI_DIR|$(pwd)|g" skills/SKILL.md > ~/.claude/skills/perplexity-search/SKILL.md
 ```
