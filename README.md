@@ -115,7 +115,7 @@ mkdir -p ~/.claude/skills/perplexity-search
 sed "s|\$PERPLEXITY_CLI_DIR|$(pwd)|g" skills/SKILL.md > ~/.claude/skills/perplexity-search/SKILL.md
 ```
 
-Run `npm install` first if you haven't already. This makes the `perplexity-search` skill available in all Claude Code sessions. The skill documents all flags, presets, API parameters, and operational notes so the agent can construct the right search for each situation.
+This installs the skill so it's available in all Claude Code sessions. The `sed` command replaces the `$PERPLEXITY_CLI_DIR` placeholder with the actual path to your clone. The skill documents all flags, presets, API parameters, and operational notes so the agent can construct the right search for each situation.
 
 ## Tests
 
