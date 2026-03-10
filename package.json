@@ -5,7 +5,13 @@
   "scripts": {
     "test": "npx tsx --test tests/search.test.ts"
   },
-  "keywords": ["perplexity", "ai", "cli", "search", "web-search"],
+  "keywords": [
+    "perplexity",
+    "ai",
+    "cli",
+    "search",
+    "web-search"
+  ],
   "author": "Ryan Damico",
   "license": "MIT",
   "type": "module",
@@ -18,5 +24,9 @@
   },
   "dependencies": {
     "@perplexity-ai/perplexity_ai": "^0.26.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.4.0",
+    "typescript": "^5.9.3"
   }
 }

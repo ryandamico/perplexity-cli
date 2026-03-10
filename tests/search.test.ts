@@ -228,19 +228,19 @@ describe("parseResponse", () => {
 
   it("throws when output_text is missing (not an SDK response)", () => {
     const fixture = loadFixture("pro-search-response.json");
-    delete (fixture as Record<string, unknown>).output_text;
+    delete (fixture as unknown as Record<string, unknown>).output_text;
     assert.throws(() => parseResponse(fixture, "pro-search"), /output_text is undefined/);
   });
 
   it("throws when usage.cost is missing", () => {
     const fixture = loadFixture("pro-search-response.json");
-    delete (fixture as Record<string, unknown> & { usage: Record<string, unknown> }).usage.cost;
+    delete (fixture as unknown as Record<string, unknown> & { usage: Record<string, unknown> }).usage.cost;
     assert.throws(() => parseResponse(fixture, "pro-search"), /usage\.cost is missing/);
   });
 
   it("throws when usage object is entirely absent", () => {
     const fixture = loadFixture("pro-search-response.json");
-    delete (fixture as Record<string, unknown>).usage;
+    delete (fixture as unknown as Record<string, unknown>).usage;
     assert.throws(() => parseResponse(fixture, "pro-search"), /usage\.cost is missing/);
   });
 });

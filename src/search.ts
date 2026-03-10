@@ -153,7 +153,7 @@ export function buildRequestBody(args: ParsedArgs): ResponseCreateParamsNonStrea
     }
     // Force non-streaming — this CLI does not support streamed responses
     bodyObj.stream = false;
-    return bodyObj as ResponseCreateParamsNonStreaming;
+    return bodyObj as unknown as ResponseCreateParamsNonStreaming;
   }
 
   // Convenience mode
@@ -236,7 +236,7 @@ export function extractSearchQueries(output: OutputItem[] | undefined): string[]
   const queries: string[] = [];
   for (const item of output) {
     if (item.type === "search_results") {
-      const sr = item as Record<string, unknown>;
+      const sr = item as unknown as Record<string, unknown>;
       if (Array.isArray(sr.queries)) {
         for (const q of sr.queries) {
           if (typeof q === "string" && !queries.includes(q)) {
