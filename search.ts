@@ -88,12 +88,6 @@ export function parseArgs(argv: string[]): ParsedArgs {
     if (arg === "--help" || arg === "-h") {
       args.help = true;
       i++;
-    } else if (arg === "--fast") {
-      args.preset = "fast-search";
-      i++;
-    } else if (arg === "--deep") {
-      args.preset = "deep-research";
-      i++;
     } else if (arg === "--preset") {
       if (++i >= argv.length) throw new Error("Flag --preset requires a value.");
       args.preset = argv[i];
@@ -395,9 +389,7 @@ Usage:
   npx tsx search.ts --body -                  Full control (JSON from stdin)
 
 Options:
-  --fast                Shorthand for --preset fast-search (~$0.02, ~5-10s)
-  --deep                Shorthand for --preset deep-research (~$0.30-3, ~3-5min)
-  --preset <name>       Preset tier (default: pro-search)
+  --preset <name>       Search preset (default: pro-search)
                         fast-search | pro-search | deep-research | advanced-deep-research
   --recency <period>    Recency filter: hour | day | week | month | year
   --domains <list>      Comma-separated domain filter (prefix with - to exclude)
@@ -417,7 +409,7 @@ Examples:
 Environment:
   PERPLEXITY_API_KEY              Required. Set in .env file alongside this script.
   PERPLEXITY_COST_LIMIT           Cost confirmation threshold in USD (default: 2.00)
-  PERPLEXITY_AUTO_UPDATE_CHECK    Set to "false" to disable auto SDK update checks
+  PERPLEXITY_AUTO_UPDATE_CHECK    Set to "true" to enable auto SDK update checks
 `.trim();
   console.log(help);
 }
@@ -481,7 +473,7 @@ function warnIfUpdateAvailable(cacheFile: string): void {
 }
 
 function checkForUpdates(): void {
-  if (process.env.PERPLEXITY_AUTO_UPDATE_CHECK === "false") return;
+  if (process.env.PERPLEXITY_AUTO_UPDATE_CHECK !== "true") return;
 
   const cacheFile = join(SCRIPT_DIR, "cache", "updates.json");
   const checkScript = join(SCRIPT_DIR, "check-updates.ts");

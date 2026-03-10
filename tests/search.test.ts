@@ -87,18 +87,22 @@ describe("parseArgs", () => {
     assert.deepEqual(result.domains, ["arxiv.org", "github.com"]);
   });
 
-  it("--fast sets preset to fast-search", () => {
-    const result = parseArgs(["query", "--fast"]);
+  it("--preset sets preset value", () => {
+    const result = parseArgs(["query", "--preset", "fast-search"]);
     assert.equal(result.preset, "fast-search");
   });
 
-  it("--deep sets preset to deep-research", () => {
-    const result = parseArgs(["query", "--deep"]);
-    assert.equal(result.preset, "deep-research");
+  it("--preset accepts all preset names", () => {
+    for (const name of ["fast-search", "pro-search", "deep-research", "advanced-deep-research"]) {
+      const result = parseArgs(["query", "--preset", name]);
+      assert.equal(result.preset, name);
+    }
   });
 
   it("throws on unrecognized flags", () => {
     assert.throws(() => parseArgs(["query", "--receny", "week"]), /Unknown flag: --receny/);
+    assert.throws(() => parseArgs(["query", "--fast"]), /Unknown flag: --fast/);
+    assert.throws(() => parseArgs(["query", "--deep"]), /Unknown flag: --deep/);
   });
 
   it("throws when value-taking flag is missing its value", () => {

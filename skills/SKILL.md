@@ -15,22 +15,22 @@ Always run with Bash `run_in_background: true` — searches take 5s to 10min dep
 
 | Mode | Flag | What it does | When to use | Typical cost | Speed |
 |------|------|-------------|-------------|------|-------|
-| **Quick search** | `--fast` | Single search step, fast model | Fact checks, definitions, simple questions | ~$0.01-0.05 | ~5-10s |
-| **Standard search** | (default) | Multi-step search with source retrieval | General research, comparisons, "what's new in X" | ~$0.01-0.15 | ~10-30s |
-| **Deep research** | `--deep` | Multiple search steps, 50-80+ sources | Literature reviews, complex analysis, in-depth topics | ~$0.30-3 | ~3-5min |
-| **Advanced deep research** | `--preset advanced-deep-research` | Same as deep but with Opus-class synthesis | Mission-critical research requiring highest quality | ~$5+ | ~5-10min |
+| `fast-search` | `--preset fast-search` | Single search step, fast model | Fact checks, definitions, simple questions | ~$0.01-0.05 | ~5-10s |
+| `pro-search` | *(default)* | Multi-step search with source retrieval | General research, comparisons, "what's new in X" | ~$0.01-0.15 | ~10-30s |
+| `deep-research` | `--preset deep-research` | Multiple search steps, 50-80+ sources | Literature reviews, complex analysis, in-depth topics | ~$0.30-3 | ~3-5min |
+| `advanced-deep-research` | `--preset advanced-deep-research` | Same as deep but with Opus-class synthesis | Mission-critical research requiring highest quality | ~$5+ | ~5-10min |
 
-The CLI prompts for confirmation when estimated cost exceeds $2.00 (configurable via `PERPLEXITY_COST_LIMIT` in `.env`). For `--deep` and `--preset advanced-deep-research`, pass `--yes` to bypass the prompt — required when using `run_in_background` since stdin is unavailable. Standard and fast searches stay under the limit and never prompt.
+The CLI prompts for confirmation when estimated cost exceeds $2.00 (configurable via `PERPLEXITY_COST_LIMIT` in `.env`). For `deep-research` and `advanced-deep-research`, pass `--yes` to bypass the prompt — required when using `run_in_background` since stdin is unavailable. `pro-search` and `fast-search` stay under the limit and never prompt.
 
 ```bash
-# Standard search (default)
+# Default (pro-search)
 npx tsx "$PERPLEXITY_CLI_DIR/search.ts" "query" --recency week
 
-# Quick search
-npx tsx "$PERPLEXITY_CLI_DIR/search.ts" "query" --fast
+# Fast search
+npx tsx "$PERPLEXITY_CLI_DIR/search.ts" "query" --preset fast-search
 
 # Deep research
-npx tsx "$PERPLEXITY_CLI_DIR/search.ts" "query" --deep --yes
+npx tsx "$PERPLEXITY_CLI_DIR/search.ts" "query" --preset deep-research --yes
 
 # Full API control
 npx tsx "$PERPLEXITY_CLI_DIR/search.ts" --body '{"preset":"deep-research","input":"query","tools":[{"type":"web_search","filters":{"search_domain_filter":["arxiv.org"]}}]}'
@@ -40,9 +40,7 @@ npx tsx "$PERPLEXITY_CLI_DIR/search.ts" --body '{"preset":"deep-research","input
 
 | Flag | Example | Notes |
 |------|---------|-------|
-| `--fast` | `--fast` | Quick search mode |
-| `--deep` | `--deep` | Deep research mode |
-| `--preset <name>` | `--preset advanced-deep-research` | Explicit preset (default: `pro-search`) |
+| `--preset <name>` | `--preset deep-research` | Search preset (default: `pro-search`) |
 | `--recency <period>` | `--recency week` | `hour`, `day`, `week`, `month`, `year` |
 | `--domains <list>` | `--domains "arxiv.org,github.com"` | Comma-separated, `-` prefix to block |
 | `--instructions <text>` | `--instructions "focus on benchmarks"` | Custom system prompt |
@@ -92,6 +90,4 @@ Always relay the footer metrics (preset, model, cost, sources, queries, tokens) 
 
 ## After Presenting Results
 
-Ask user if they want to save. Suggest path:
-- In a project: `./research/<topic-slug>.md`
-- In ~/.claude: `~/.claude/research/<topic-slug>.md`
+Ask user if they want to save. Suggest a path most suitable for their project.
