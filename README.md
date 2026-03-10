@@ -1,6 +1,6 @@
 # perplexity-cli
 
-A command-line interface for the [Perplexity Agent API](https://docs.perplexity.ai/guides/agent-api), optimized for agent use. Search the web from the terminal and get back structured, sourced answers.
+A command-line interface for the [Perplexity Agent API](https://docs.perplexity.ai/guides/agent-api), optimized for agent use. Search the web from your terminal and get back structured, sourced answers.
 
 ## Why?
 
