@@ -5,8 +5,9 @@ import { fileURLToPath } from "node:url";
 const scriptDir = typeof import.meta.dirname === "string"
   ? import.meta.dirname
   : dirname(fileURLToPath(import.meta.url));
+const projectRoot = join(scriptDir, "..");
 
-const CACHE_DIR = join(scriptDir, "cache");
+const CACHE_DIR = join(projectRoot, "cache");
 const CACHE_FILE = join(CACHE_DIR, "updates.json");
 const MODELS_URL = "https://docs.perplexity.ai/docs/agent-api/models";
 const NPM_PACKAGE = "@perplexity-ai/perplexity_ai";
@@ -41,7 +42,7 @@ async function fetchLatestSdkVersion(): Promise<string> {
 function getInstalledSdkVersion(): string {
   try {
     const pkg = JSON.parse(
-      readFileSync(join(scriptDir, "node_modules", NPM_PACKAGE, "package.json"), "utf-8")
+      readFileSync(join(projectRoot, "node_modules", NPM_PACKAGE, "package.json"), "utf-8")
     );
     return pkg.version;
   } catch {

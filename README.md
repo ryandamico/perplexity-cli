@@ -15,7 +15,7 @@ git clone https://github.com/ryandamico/perplexity-cli.git
 cd perplexity-cli
 npm install
 cp .env.example .env        # add your API key
-npx tsx search.ts "your query"
+npx tsx src/search.ts "your query"
 ```
 
 Get an API key at [perplexity.ai/settings/api](https://www.perplexity.ai/settings/api). [`tsx`](https://tsx.is/) runs TypeScript directly via `npx` — no global install needed.
@@ -39,28 +39,28 @@ This CLI wraps each preset with `--preset <name>`:
 
 ```bash
 # Basic search (pro-search preset)
-npx tsx search.ts "latest TypeScript features"
+npx tsx src/search.ts "latest TypeScript features"
 
 # Fast and cheap
-npx tsx search.ts "weather in NYC" --preset fast-search
+npx tsx src/search.ts "weather in NYC" --preset fast-search
 
 # Deep research (takes a few minutes, costs more)
-npx tsx search.ts "compare React Server Components vs Astro Islands" --preset deep-research
+npx tsx src/search.ts "compare React Server Components vs Astro Islands" --preset deep-research
 
 # Filter by recency and domain
-npx tsx search.ts "rust async runtime benchmarks" --recency week --domains arxiv.org,github.com
+npx tsx src/search.ts "rust async runtime benchmarks" --recency week --domains arxiv.org,github.com
 
 # Save results to files
-npx tsx search.ts "query" --save ./research
+npx tsx src/search.ts "query" --save ./research
 
 # JSON output for piping
-npx tsx search.ts "query" --json | jq .sources
+npx tsx src/search.ts "query" --json | jq .sources
 
 # Full API control — pass any valid request body
-npx tsx search.ts --body '{"preset":"pro-search","input":"query","instructions":"respond in Spanish"}'
+npx tsx src/search.ts --body '{"preset":"pro-search","input":"query","instructions":"respond in Spanish"}'
 
 # Read body from stdin
-cat request.json | npx tsx search.ts --body -
+cat request.json | npx tsx src/search.ts --body -
 ```
 
 ## All Flags
@@ -120,7 +120,7 @@ npm test
 To check for SDK updates manually:
 
 ```bash
-npx tsx check-updates.ts
+npx tsx src/check-updates.ts
 ```
 
 Set `PERPLEXITY_AUTO_UPDATE_CHECK=true` in `.env` to run this automatically every 2 days.

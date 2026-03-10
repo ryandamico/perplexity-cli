@@ -21,6 +21,8 @@ const SCRIPT_DIR = typeof import.meta.dirname === "string"
   ? import.meta.dirname
   : dirname(fileURLToPath(import.meta.url));
 
+const PROJECT_ROOT = join(SCRIPT_DIR, "..");
+
 // ── Types ──────────────────────────────────────────────────────────
 
 export interface ParsedArgs {
@@ -309,7 +311,7 @@ export function formatMarkdown(result: ParsedResponse, query: string, meta?: Req
     md += "\n```\n\n";
     // Ready-to-paste CLI command
     md += "**Reproduce:**\n```bash\n";
-    md += `npx tsx search.ts --body '${JSON.stringify(meta.requestBody)}'`;
+    md += `npx tsx src/search.ts --body '${JSON.stringify(meta.requestBody)}'`;
     md += "\n```\n";
     md += "</details>\n\n";
   }
@@ -384,9 +386,9 @@ function printHelp(): void {
 Perplexity Web Search — CLI for the Perplexity Agent API
 
 Usage:
-  npx tsx search.ts "query" [options]         Convenience mode
-  npx tsx search.ts --body '<json>'           Full control mode
-  npx tsx search.ts --body -                  Full control (JSON from stdin)
+  npx tsx src/search.ts "query" [options]         Convenience mode
+  npx tsx src/search.ts --body '<json>'           Full control mode
+  npx tsx src/search.ts --body -                  Full control (JSON from stdin)
 
 Options:
   --preset <name>       Search preset (default: pro-search)
@@ -401,10 +403,10 @@ Options:
   -h, --help            Show this help
 
 Examples:
-  npx tsx search.ts "latest Node.js features" --recency week
-  npx tsx search.ts "machine learning papers" --preset deep-research --domains arxiv.org
-  npx tsx search.ts "query" --save ./research
-  npx tsx search.ts --body '{"preset":"pro-search","input":"query"}'
+  npx tsx src/search.ts "latest Node.js features" --recency week
+  npx tsx src/search.ts "machine learning papers" --preset deep-research --domains arxiv.org
+  npx tsx src/search.ts "query" --save ./research
+  npx tsx src/search.ts --body '{"preset":"pro-search","input":"query"}'
 
 Environment:
   PERPLEXITY_API_KEY              Required. Set in .env file alongside this script.
@@ -419,7 +421,7 @@ Environment:
 function getSdkVersion(): string {
   try {
     const pkg = JSON.parse(
-      readFileSync(join(SCRIPT_DIR, "node_modules", "@perplexity-ai", "perplexity_ai", "package.json"), "utf-8")
+      readFileSync(join(PROJECT_ROOT, "node_modules", "@perplexity-ai", "perplexity_ai", "package.json"), "utf-8")
     );
     return pkg.version;
   } catch {
@@ -430,7 +432,7 @@ function getSdkVersion(): string {
 // ── .env loader ────────────────────────────────────────────────────
 
 export function loadEnv(): void {
-  const envPath = join(SCRIPT_DIR, ".env");
+  const envPath = join(PROJECT_ROOT, ".env");
 
   try {
     const content = readFileSync(envPath, "utf-8");
@@ -466,7 +468,7 @@ function warnIfUpdateAvailable(cacheFile: string): void {
     if (cache.sdk_version_installed !== cache.sdk_version_latest) {
       console.error(
         `NOTE: SDK update available: ${cache.sdk_version_installed} → ${cache.sdk_version_latest}. ` +
-        `Run: cd ${SCRIPT_DIR} && npm update @perplexity-ai/perplexity_ai`
+        `Run: cd ${PROJECT_ROOT} && npm update @perplexity-ai/perplexity_ai`
       );
     }
   } catch { /* cache unreadable — not critical */ }
@@ -475,7 +477,7 @@ function warnIfUpdateAvailable(cacheFile: string): void {
 function checkForUpdates(): void {
   if (process.env.PERPLEXITY_AUTO_UPDATE_CHECK !== "true") return;
 
-  const cacheFile = join(SCRIPT_DIR, "cache", "updates.json");
+  const cacheFile = join(PROJECT_ROOT, "cache", "updates.json");
   const checkScript = join(SCRIPT_DIR, "check-updates.ts");
 
   // Determine if we need to run the check
@@ -495,7 +497,7 @@ function checkForUpdates(): void {
   // Auto-run the update check
   try {
     execFileSync("npx", ["tsx", checkScript], {
-      cwd: SCRIPT_DIR,
+      cwd: PROJECT_ROOT,
       timeout: 15_000,
       stdio: ["ignore", "pipe", "pipe"],
     });
@@ -583,7 +585,7 @@ async function main(): Promise<void> {
   const apiKey = process.env.PERPLEXITY_API_KEY;
   if (!apiKey) {
     console.error(
-      `ERROR: PERPLEXITY_API_KEY not found. Create ${join(SCRIPT_DIR, ".env")} with your key.`
+      `ERROR: PERPLEXITY_API_KEY not found. Create ${join(PROJECT_ROOT, ".env")} with your key.`
     );
     process.exit(1);
   }

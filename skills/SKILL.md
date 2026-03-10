@@ -7,7 +7,7 @@ description: "This skill should be used when the user asks to 'search with perpl
 
 Search the web using the Perplexity Agent API. Perplexity decomposes queries into sub-queries, searches its index, retrieves sources, and sends them to a synthesis model that produces a cited answer. The `model` parameter only changes which model synthesizes — the search layer is always Perplexity's.
 
-Script: `"$PERPLEXITY_CLI_DIR/search.ts"`
+Script: `"$PERPLEXITY_CLI_DIR/src/search.ts"`
 
 Always run with Bash `run_in_background: true` — searches take 5s to 10min depending on mode.
 
@@ -24,16 +24,16 @@ The CLI prompts for confirmation when estimated cost exceeds $2.00 (configurable
 
 ```bash
 # Default (pro-search)
-npx tsx "$PERPLEXITY_CLI_DIR/search.ts" "query" --recency week
+npx tsx "$PERPLEXITY_CLI_DIR/src/search.ts" "query" --recency week
 
 # Fast search
-npx tsx "$PERPLEXITY_CLI_DIR/search.ts" "query" --preset fast-search
+npx tsx "$PERPLEXITY_CLI_DIR/src/search.ts" "query" --preset fast-search
 
 # Deep research
-npx tsx "$PERPLEXITY_CLI_DIR/search.ts" "query" --preset deep-research --yes
+npx tsx "$PERPLEXITY_CLI_DIR/src/search.ts" "query" --preset deep-research --yes
 
 # Full API control
-npx tsx "$PERPLEXITY_CLI_DIR/search.ts" --body '{"preset":"deep-research","input":"query","tools":[{"type":"web_search","filters":{"search_domain_filter":["arxiv.org"]}}]}'
+npx tsx "$PERPLEXITY_CLI_DIR/src/search.ts" --body '{"preset":"deep-research","input":"query","tools":[{"type":"web_search","filters":{"search_domain_filter":["arxiv.org"]}}]}'
 ```
 
 ## Flags

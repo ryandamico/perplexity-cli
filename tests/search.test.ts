@@ -15,8 +15,8 @@ import {
   extractUsageMetrics,
   getCostLimit,
   estimateCost,
-} from "../search.ts";
-import type { ParsedResponse, RequestMetadata } from "../search.ts";
+} from "../src/search.ts";
+import type { ParsedResponse, RequestMetadata } from "../src/search.ts";
 import type { ResponseCreateResponse, ResponseCreateParams } from "@perplexity-ai/perplexity_ai/resources/responses";
 
 const __dirname = typeof import.meta.dirname === "string"
