@@ -20,6 +20,16 @@ npx tsx src/search.ts "your query"
 
 Get an API key at [perplexity.ai/settings/api](https://www.perplexity.ai/settings/api). [`tsx`](https://tsx.is/) runs TypeScript directly via `npx` — no global install needed.
 
+### Shell Alias (optional)
+
+Add to `~/.zshrc` or `~/.bashrc` for quick access:
+
+```bash
+alias perplexity='npx tsx /path/to/perplexity-cli/src/search.ts'
+```
+
+Then: `perplexity "your query"`, `perplexity "topic" --preset deep-research`, etc.
+
 ## Presets
 
 Perplexity's [Agent API](https://docs.perplexity.ai/guides/agent-api) uses a two-layer architecture. A **search layer** (always Perplexity's) decomposes your query into sub-queries, searches the web, and retrieves sources. A **synthesis model** reads those sources and produces a cited answer. The `preset` controls how the search layer behaves — how many search steps, how many sources, and how thorough the retrieval. The `model` parameter only changes which LLM synthesizes the final answer.
